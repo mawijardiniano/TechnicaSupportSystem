@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const adminRouter = require("./routes/adminRoutes");
 const userRouter = require("./routes/userRoutes");
+const problemRouter = require("./routes/problemRoutes");
+
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -22,6 +24,7 @@ mongoose
 
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
+app.use("/api/report", problemRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
