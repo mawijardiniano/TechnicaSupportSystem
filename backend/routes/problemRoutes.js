@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const { reportProblem,getReports } = require("../controllers/problemController");
 
 router.get("/get-report", getReports);
