@@ -4,6 +4,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 const User = require("../models/userModel");
 
+const getUsers = async (req,res) => {
+    try {
+        const getUser = await User.find()
+        res.json(getUser)
+    } catch (error) {
+        
+    }
+}
+
 const userSignup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -60,4 +69,4 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { userSignup, userLogin };
+module.exports = { userSignup, userLogin,getUsers };
