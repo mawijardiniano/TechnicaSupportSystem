@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
         <aside className="w-64 bg-blue-800 text-white hidden md:block">
           <Sidebar />
         </aside>
-        <main className="flex-1 p-6 bg-blue-100">{children}</main>
+        <main className="flex-1 p-6 bg-white">{children}</main>
       </div>
     </div>
   );
