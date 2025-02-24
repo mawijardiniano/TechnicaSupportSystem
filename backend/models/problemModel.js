@@ -31,7 +31,12 @@ const ProblemSchema = new mongoose.Schema({
   attachments : {
     type: String,
     required: false,
-  }
+  },
+  status :  {
+type: String,
+enum: ["Pending", "In Progress", "On Hold", "Resolved", "Closed"],
+required: false
+}
 });
 
 module.exports = mongoose.model("Problem", ProblemSchema);
