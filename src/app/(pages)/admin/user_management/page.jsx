@@ -1,48 +1,68 @@
-'use client'
-import axios from "axios"
-import { useState, useEffect } from "react"
+"use client";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function Users() {
-    const GET = "http://localhost:5001/api/user/get-users"
-    const [users, setUsers] = useState([])
+  const [users, setUsers] = useState([]);
 
-    const getUsers = async () => {
-        try {
-            const response = await axios.get(GET)
-            setUsers(response.data)
-        } catch (error) {
-            console.error("Error fetching users:", error)
-        }
+  const GET_USERS = "http://localhost:5001/api/user/get-users";
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(GET_USERS);
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
     }
-    useEffect(() => {
-        getUsers()
-    }, [])
+  };
 
-    return (
-        <div className="p-6">
-            {users.length > 0 && (
-                <table className="border border-gray-300 w-full border-collapse">
-                    <thead>
-                        <tr className="bg-gray-200">
-                            <th className="border border-gray-400 px-4 py-2 text-center">Users</th>
-                            <th className="border border-gray-400 px-4 py-2 text-center">Position</th>
-                            <th className="border border-gray-400 px-4 py-2 text-center w-60">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user, index) => (
-                            <tr key={index}>
-                                <td className="border border-gray-400 px-4 py-2">{user.name}</td>
-                                <td className="border border-gray-400 px-4 py-2">{user.name}</td>
-                                <td className="border border-gray-400 flex items-center justify-center space-x-4 px-4 py-2 w-60">
-                                    <button className="bg-green-500 py-1 px-4 rounded-md hover:bg-green-400 text-white">Edit</button>
-                                    <button className="bg-red-500 py-1 px-4 rounded-md hover:bg-red-700 text-white">Delete</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  return (
+    <div className="">
+      <h1 className="text-2xl font-bold mb-4">Users</h1>
+
+      {users.length > 0 ? (
+        <div className="border p-4 rounded-md bg-white">
+          <h2 className="text-2xl font-bold mb-2">User List</h2>
+          <Table className="w-full">
+            <TableHeader>
+              <TableRow className="bg-gray-200">
+                <TableHead className=" p-4">Users</TableHead>
+                <TableHead className="p-4">Position</TableHead>
+                <TableHead className="p-4 text-center">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((user, index) => (
+                <TableRow key={index} className="border-b">
+                  <TableCell className="p-4 font-medium">{user.name}</TableCell>
+                  <TableCell className="p-4">{user.position}</TableCell>
+                  <TableCell className="p-4 text-center space-x-2">
+                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
+                      Edit
+                    </button>
+                    <button className="bg-red-500 text-white px-4 py-1 rounded">Delete</button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-    )
+      ) : (
+        <p className="text-gray-600">No users found.</p>
+      )}
+    </div>
+  );
 }
