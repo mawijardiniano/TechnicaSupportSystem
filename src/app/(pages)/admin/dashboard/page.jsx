@@ -1,7 +1,14 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BarChart, AlertCircle } from "lucide-react";
+import {
+  BarChart,
+  Clock,
+  Loader,
+  PauseCircle,
+  CheckCircle,
+  AlertTriangle,
+} from "lucide-react";
 
 export default function Admin() {
   const GET = "http://localhost:5001/api/report/get-report";
@@ -59,7 +66,7 @@ export default function Admin() {
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
             <p>Pending Reports</p>
-            <BarChart />
+            <Clock />
           </div>
           <p className="text-3xl font-bold">{pendingReports}</p>
           <p className="text-gray-400 font-medium text-sm">
@@ -69,7 +76,7 @@ export default function Admin() {
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
             <p>In Progress Reports</p>
-            <BarChart />
+            <Loader />
           </div>
           <p className="text-3xl font-bold">{inProgressReports}</p>
           <p className="text-gray-400 font-medium text-sm">
@@ -79,7 +86,7 @@ export default function Admin() {
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
             <p>On Hold Reports</p>
-            <BarChart />
+            <PauseCircle />
           </div>
           <p className="text-3xl font-bold">{onHoldReports}</p>
           <p className="text-gray-400 font-medium text-sm">
@@ -89,7 +96,7 @@ export default function Admin() {
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
             <p>Closed Reports</p>
-            <BarChart />
+            <CheckCircle />
           </div>
           <p className="text-3xl font-bold">{closedReports}</p>
           <p className="text-gray-400 font-medium text-sm">
@@ -99,7 +106,7 @@ export default function Admin() {
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
             <p>Critical Reports</p>
-            <AlertCircle />
+            <AlertTriangle />
           </div>
           <p className="text-3xl font-bold">{criticalReports}</p>
           <p className="text-gray-400 font-medium text-sm">
