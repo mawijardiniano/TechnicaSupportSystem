@@ -48,7 +48,7 @@ export default function Users() {
               {users.map((user, index) => (
                 <TableRow key={index} className="border-b">
                   <TableCell className="p-4 font-medium">{user.name}</TableCell>
-                  <TableCell className="p-4">{user.position}</TableCell>
+                  <TableCell className="p-4">{user.email}</TableCell>
                   <TableCell className="p-4 text-center space-x-2">
                     <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
                       Edit
