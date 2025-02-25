@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Dashboard() {
   const [formData, setFormData] = useState({
@@ -12,7 +12,6 @@ export default function Dashboard() {
     contact: "",
   });
   const [message, setMessage] = useState("");
-  
 
   const handleChange = (e) => {
     setFormData({
@@ -20,7 +19,6 @@ export default function Dashboard() {
       [e.target.name]: e.target.value,
     });
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,31 +47,22 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center bg-cover bg-center relative overflow-hidden">
-      <Card>
+    <div className="">
+      <Card className="w-full max-w-2xl p-6">
         <CardContent>
-          <h2 className="text-xl font-semibold mb-4">Submit a Technical Problem</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            Submit a Technical Problem
+          </h2>
           {message && <div className="mb-4 text-green-600">{message}</div>}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-              <label htmlFor="severity" className="block text-sm font-medium">Problem</label>
-              <select
-                id="severity"
-                name="severity"
-                value={formData.severity}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                required
-              >
-                <option value="low">Cable</option>
-                <option value="medium">PC</option>
-                <option value="high">Network</option>
-              </select>
-            </div>
-            
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="description" className="block text-sm font-medium">Problem Description</label>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium"
+              >
+                Problem Description
+              </label>
               <textarea
                 id="description"
                 name="description"
@@ -85,7 +74,9 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <label htmlFor="severity" className="block text-sm font-medium">Severity</label>
+              <label htmlFor="severity" className="block text-sm font-medium">
+                Severity
+              </label>
               <select
                 id="severity"
                 name="severity"
@@ -101,7 +92,9 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <label htmlFor="system" className="block text-sm font-medium">Affected System</label>
+              <label htmlFor="system" className="block text-sm font-medium">
+                Affected System
+              </label>
               <input
                 id="system"
                 name="system"
@@ -114,7 +107,9 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <label htmlFor="location" className="block text-sm font-medium">Location</label>
+              <label htmlFor="location" className="block text-sm font-medium">
+                Location
+              </label>
               <input
                 id="location"
                 name="location"
@@ -127,7 +122,9 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <label htmlFor="contact" className="block text-sm font-medium">Contact Information</label>
+              <label htmlFor="contact" className="block text-sm font-medium">
+                Contact Information
+              </label>
               <input
                 id="contact"
                 name="contact"
@@ -140,7 +137,12 @@ export default function Dashboard() {
             </div>
 
             <div className="text-right">
-              <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md">Submit</button>
+              <button
+                type="submit"
+                className="px-6 py-2 bg-blue-600 text-white rounded-md"
+              >
+                Submit
+              </button>
             </div>
           </form>
         </CardContent>
