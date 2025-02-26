@@ -97,7 +97,6 @@ export default function Report() {
     <div className="w-full">
       <h1 className="text-2xl font-bold pb-4">Reports</h1>
       <div className="space-y-4">
-     
         <div className="border rounded-md p-4">
           <h1 className="text-2xl font-bold pb-2">Filter Reports</h1>
           <div className="flex justify-between">
@@ -146,9 +145,8 @@ export default function Report() {
           </div>
         </div>
 
-
         {filteredReports.length > 0 ? (
-          <div className="bg-white rounded-md border p-4">
+          <div className="bg-white rounded-md border p-4 max-h-[600px] overflow-y-auto">
             <Table className="w-full">
               <TableHeader>
                 <TableRow>
