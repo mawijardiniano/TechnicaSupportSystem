@@ -2,71 +2,86 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Dashboard() {
-  const [formData, setFormData] = useState({
-    description: "",
-    severity: "low",
-    system: "",
+  const initialFormData = {
+    problem: "",
+    problemDescription: "",
+    severityLevel: "",
+    affected: "",
     location: "",
-    contact: "",
-  });
+    contactInformation: "",
+    attachments: "",
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
   const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const SUBMIT_REPORT = "http://localhost:5001/api/report/send-report";
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (!name) return;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await fetch("/api/reports", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      setMessage("Your request has been submitted successfully!");
-      setFormData({
-        description: "",
-        severity: "low",
-        system: "",
-        location: "",
-        contact: "",
+    setMessage("");
+  
+    try {
+      await axios.post(SUBMIT_REPORT, formData, {
+        headers: { "Content-Type": "application/json" },
       });
-    } else {
-      setMessage("Failed to submit your request. Please try again.");
+  
+      setMessage("Your request has been submitted successfully!");
+      setFormData(initialFormData);
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      setMessage(error?.response?.data?.message || "An error occurred. Please try again later.");
     }
   };
+  
 
   return (
     <div className="">
       <Card className="w-full max-w-2xl p-6">
         <CardContent>
-          <h2 className="text-2xl font-semibold mb-6">
-            Submit a Technical Problem
-          </h2>
+          <h2 className="text-2xl font-semibold mb-6">Submit a Technical Problem</h2>
           {message && <div className="mb-4 text-green-600">{message}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium"
+              <label htmlFor="problem" className="block text-sm font-medium">
+                Problem
+              </label>
+              <select
+                id="problem"
+                name="problem"
+                value={formData.problem}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
               >
+                <option value="">Select a problem</option>
+                <option value="software issue">Software Issue</option>
+                <option value="hardware malfunction">Hardware Malfunction</option>
+                <option value="network connectivity">Network Connectivity</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="problemDescription" className="block text-sm font-medium">
                 Problem Description
               </label>
               <textarea
-                id="description"
-                name="description"
-                value={formData.description}
+                id="problemDescription"
+                name="problemDescription"
+                value={formData.problemDescription}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
@@ -74,32 +89,34 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <label htmlFor="severity" className="block text-sm font-medium">
-                Severity
+              <label htmlFor="severityLevel" className="block text-sm font-medium">
+                Severity Level
               </label>
               <select
-                id="severity"
-                name="severity"
-                value={formData.severity}
+                id="severityLevel"
+                name="severityLevel"
+                value={formData.severityLevel}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
               >
-                <option value="low">Low</option>
-                <option value="medium">Moderate</option>
-                <option value="high">Priority</option>
+                <option value="">Select severity level</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
               </select>
             </div>
 
             <div>
-              <label htmlFor="system" className="block text-sm font-medium">
+              <label htmlFor="affected" className="block text-sm font-medium">
                 Affected System
               </label>
               <input
-                id="system"
-                name="system"
+                id="affected"
+                name="affected"
                 type="text"
-                value={formData.system}
+                value={formData.affected}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
@@ -122,25 +139,36 @@ export default function Dashboard() {
             </div>
 
             <div>
-              <label htmlFor="contact" className="block text-sm font-medium">
+              <label htmlFor="contactInformation" className="block text-sm font-medium">
                 Contact Information
               </label>
               <input
-                id="contact"
-                name="contact"
+                id="contactInformation"
+                name="contactInformation"
                 type="text"
-                value={formData.contact}
+                value={formData.contactInformation}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
               />
             </div>
 
+            <div>
+              <label htmlFor="attachments" className="block text-sm font-medium">
+                Attachments
+              </label>
+              <input
+                id="attachments"
+                name="attachments"
+                type="text"
+                value={formData.attachments}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+
             <div className="text-right">
-              <button
-                type="submit"
-                className="px-6 py-2 bg-blue-600 text-white rounded-md"
-              >
+              <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md">
                 Submit
               </button>
             </div>
