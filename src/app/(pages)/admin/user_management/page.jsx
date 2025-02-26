@@ -14,7 +14,7 @@ import {
 export default function Users() {
   const [users, setUsers] = useState([]);
 
-  const GET_USERS = "http://localhost:5001/api/user/get-users";
+  const GET_USERS = "http://localhost:5001/api/authentication/get-users";
 
   const fetchUsers = async () => {
     try {

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 
 export default function Page() {
-  const LOGIN = "http://localhost:5001/api/user/login";
+  const LOGIN = "http://localhost:5001/api/authentication/login";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -15,23 +15,29 @@ export default function Page() {
     setMessage("");
   
     try {
-      const response = await fetch(LOGIN, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post(LOGIN, { email, password });
   
-      const data = await response.json();
-      console.log("Server response:", data); 
+      console.log("Server response:", response.data);
   
-      if (response.ok && data.status === "ok") {
+      const { status, message, data } = response.data;
+  
+      if (status === "ok" && data?.accountType) {
         setMessage("Login successful!");
-        localStorage.setItem("token", data.data.token); 
-        router.push("/users/dashboard");
+        localStorage.setItem("token", data.token);
+        
+        switch (data.accountType) {
+          case "user":
+            router.push("/users/dashboard");
+            break;
+          case "admin":
+            router.push("/admin/dashboard");
+            break;
+          default:
+            setMessage("Unknown account type. Please contact support.");
+            break;
+        }
       } else {
-        setMessage(data.message || "Login failed. Please check your credentials and try again.");
+        setMessage(message || "Login failed. Please check your credentials and try again.");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -39,6 +45,8 @@ export default function Page() {
     }
   };
   
+  
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="border rounded-md shadow-lg p-6 bg-white">
