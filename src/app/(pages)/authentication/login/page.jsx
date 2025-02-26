@@ -24,6 +24,7 @@ export default function Page() {
       if (status === "ok" && data?.accountType) {
         setMessage("Login successful!");
         localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.userId);
         
         switch (data.accountType) {
           case "user":
