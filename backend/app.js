@@ -2,8 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const adminRouter = require("./routes/adminRoutes");
-const userRouter = require("./routes/userRoutes");
+const authenticationRouter = require("./routes/authenticationRoutes");
 const problemRouter = require("./routes/problemRoutes");
 
 dotenv.config();
@@ -22,8 +21,7 @@ mongoose
   .then(() => console.log("Database connected successfully"))
   .catch((err) => console.log("Database connection error: ", err));
 
-app.use("/api/admin", adminRouter);
-app.use("/api/user", userRouter);
+app.use("/api/authentication", authenticationRouter);
 app.use("/api/report", problemRouter);
 
 app.listen(port, () => {

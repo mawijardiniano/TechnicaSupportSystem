@@ -1,5 +1,5 @@
 
-import Admin from "@/app/(pages)/users/authentication/login/page"
+import Admin from "@/app/(pages)/authentication/login/page"
 export default function Home() {
   return (
     <div>
