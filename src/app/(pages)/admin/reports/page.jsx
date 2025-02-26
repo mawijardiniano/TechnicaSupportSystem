@@ -15,6 +15,8 @@ export default function Report() {
   const [filteredReports, setFilteredReports] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [updatedStatuses, setUpdatedStatuses] = useState({});
+  const [viewModal, setViewModal] = useState(false);
+  const [selectedReport, setSelectedReport] = useState(null);
   const [filters, setFilters] = useState({
     status: "",
     severity: "",
@@ -29,7 +31,7 @@ export default function Report() {
     try {
       const response = await axios.get(GET);
       setReports(response.data);
-      setFilteredReports(response.data); // Initialize with full data
+      setFilteredReports(response.data);
     } catch (error) {
       console.error("Error fetching reports", error);
     }
@@ -146,7 +148,7 @@ export default function Report() {
         </div>
 
         {filteredReports.length > 0 ? (
-          <div className="bg-white rounded-md border p-4 max-h-[600px] overflow-y-auto">
+          <div className="bg-white rounded-md border p-4 max-h-[500px] overflow-y-auto">
             <Table className="w-full">
               <TableHeader>
                 <TableRow>
@@ -159,29 +161,31 @@ export default function Report() {
                 </TableRow>
                 <TableRow className="bg-gray-200">
                   <TableHead className="w-[50px] p-4">ID</TableHead>
+                  <TableHead className="p-4">Name</TableHead>
                   <TableHead className="p-4">Problem</TableHead>
                   <TableHead className="p-4">Description</TableHead>
                   <TableHead className="p-4">Severity</TableHead>
                   <TableHead className="p-4">Affected</TableHead>
-                  <TableHead className="p-4">Location</TableHead>
-                  <TableHead className="p-4">Contact</TableHead>
-                  <TableHead className="p-4">Attachment</TableHead>
-                  <TableHead className="p-4">Status</TableHead>
+                  <TableHead className="w-40">Status</TableHead>
                   <TableHead className="p-4 text-center">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredReports.map((reports, index) => (
                   <TableRow key={index} className="border-b">
-                    <TableCell className="p-4 font-medium">{index + 1}</TableCell>
+                    <TableCell className="p-4 font-medium">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="p-4">{reports.user?.name}</TableCell>
                     <TableCell className="p-4">{reports.problem}</TableCell>
-                    <TableCell className="p-4">{reports.problemDescription}</TableCell>
-                    <TableCell className="p-4">{reports.severityLevel}</TableCell>
-                    <TableCell className="p-4">{reports.affected}</TableCell>
-                    <TableCell className="p-4">{reports.location}</TableCell>
-                    <TableCell className="p-4">{reports.contactInformation}</TableCell>
-                    <TableCell className="p-4">{reports.attachment || "No attachment"}</TableCell>
                     <TableCell className="p-4">
+                      {reports.problemDescription}
+                    </TableCell>
+                    <TableCell className="p-4">
+                      {reports.severityLevel}
+                    </TableCell>
+                    <TableCell className="p-4">{reports.affected}</TableCell>
+                    <TableCell className="w-40">
                       {editingIndex === index ? (
                         <select
                           className="border p-2 rounded"
@@ -203,18 +207,27 @@ export default function Report() {
                         reports.status || "Pending"
                       )}
                     </TableCell>
-                    <TableCell className="p-4 text-center">
+                    <TableCell className="p-4 text-center flex flex-row justify-center gap-2 items-center">
+                      <button
+                        className="bg-white border rounded w-36 py-2"
+                        onClick={() => {
+                          setViewModal(true);
+                          setSelectedReport(reports);
+                        }}
+                      >
+                        View Report
+                      </button>
                       {editingIndex === index ? (
                         <button
                           onClick={() => updateStatus(reports._id, index)}
-                          className="bg-green-500 text-white py-1 px-4 rounded-sm hover:bg-green-700"
+                          className="bg-green-500 text-white py-2 px-4 rounded-sm hover:bg-green-700 w-36"
                         >
                           Save
                         </button>
                       ) : (
                         <button
                           onClick={() => setEditingIndex(index)}
-                          className="bg-black text-white py-1 px-4 rounded-sm hover:bg-gray-800"
+                          className="bg-black text-white py-2 px-4 w-36 rounded-sm hover:bg-gray-800"
                         >
                           Update Status
                         </button>
@@ -222,6 +235,65 @@ export default function Report() {
                     </TableCell>
                   </TableRow>
                 ))}
+                {viewModal && selectedReport && (
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                      <h2 className="text-lg font-bold mb-4">Report Details</h2>
+                      {selectedReport ? (
+                        <>
+                          <p>
+                            <strong>Report ID:</strong>{" "}
+                            {selectedReport?._id || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Name:</strong>{" "}
+                            {selectedReport?.user?.name || "Unknown"}
+                          </p>
+                          <p>
+                            <strong>Problem Type:</strong>{" "}
+                            {selectedReport?.problem || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Description:</strong>{" "}
+                            {selectedReport?.problemDescription || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Severity Level:</strong>{" "}
+                            {selectedReport?.severityLevel || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Affected:</strong>{" "}
+                            {selectedReport?.affected || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Location:</strong>{" "}
+                            {selectedReport?.location || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Contact Information:</strong>{" "}
+                            {selectedReport?.contactInformation || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Attachment:</strong>{" "}
+                            {selectedReport?.attachment || "No attachment"}
+                          </p>
+                          <p>
+                            <strong>Status:</strong>{" "}
+                            {selectedReport?.status || "Pending"}
+                          </p>
+                        </>
+                      ) : (
+                        <p>No Data Available</p>
+                      )}
+                      <button
+                        onClick={() => setViewModal(false)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-sm mt-4 hover:bg-red-700 w-full"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
               </TableBody>
             </Table>
           </div>

@@ -1,26 +1,30 @@
 const mongoose = require("mongoose");
 
-
 const ProblemSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Authentication",
+    required: true,
+  },
   problem: {
     type: String,
-    enum: ["software issue", "hardware malfunction" , "network connectivity"],
+    enum: ["software issue", "hardware malfunction", "network connectivity"],
     required: true,
   },
   problemDescription: {
     type: String,
     required: true,
   },
-  severityLevel : {
+  severityLevel: {
     type: String,
     enum: ["Low", "Medium", "High", "Critical"],
-    require: true,
+    required: true,
   },
   affected: {
     type: String,
     required: true,
   },
-  location : {
+  location: {
     type: String,
     required: true,
   },
@@ -28,15 +32,20 @@ const ProblemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  attachments : {
+  attachments: {
     type: String,
     required: false,
   },
-  status :  {
-type: String,
-enum: ["Pending", "In Progress", "On Hold", "Resolved", "Closed"],
-required: false
-}
+  status: {
+    type: String,
+    enum: ["Pending", "In Progress", "On Hold", "Resolved", "Closed"],
+    required: false,
+    default: "Pending",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Problem", ProblemSchema);

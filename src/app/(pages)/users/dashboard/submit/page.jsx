@@ -1,11 +1,12 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Dashboard() {
   const initialFormData = {
+    user: "",
     problem: "",
     problemDescription: "",
     severityLevel: "",
@@ -17,44 +18,70 @@ export default function Dashboard() {
 
   const [formData, setFormData] = useState(initialFormData);
   const [message, setMessage] = useState("");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+      setFormData((prev) => ({ ...prev, user: storedUserId }));
+    }
+  }, []);
 
   const SUBMIT_REPORT = "http://localhost:5001/api/report/send-report";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (!name) return;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-  
+
+    if (!userId) {
+      setMessage("You must be logged in to submit a report.");
+      return;
+    }
+
     try {
-      await axios.post(SUBMIT_REPORT, formData, {
-        headers: { "Content-Type": "application/json" },
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setMessage("You must be logged in to submit a report.");
+        return;
+      }
+
+      const dataToSend = { ...formData };
+      if (!dataToSend.attachments) {
+        delete dataToSend.attachments;
+      }
+
+      await axios.post(SUBMIT_REPORT, dataToSend, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
-  
+
       setMessage("Your request has been submitted successfully!");
-      setFormData(initialFormData);
+      setFormData((prev) => ({ ...initialFormData, user: userId })); // Keep user ID
     } catch (error) {
       console.error("Error submitting report:", error);
       setMessage(error?.response?.data?.message || "An error occurred. Please try again later.");
     }
   };
-  
 
   return (
-    <div className="">
-      <Card className="w-full max-w-2xl p-6">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-2xl p-6 shadow-lg">
         <CardContent>
-          <h2 className="text-2xl font-semibold mb-6">Submit a Technical Problem</h2>
-          {message && <div className="mb-4 text-green-600">{message}</div>}
+          <h2 className="text-2xl font-semibold mb-6 text-center">Submit a Technical Problem</h2>
+          {message && <div className="mb-4 text-green-600 text-center">{message}</div>}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="problem" className="block text-sm font-medium">
                 Problem
@@ -155,7 +182,7 @@ export default function Dashboard() {
 
             <div>
               <label htmlFor="attachments" className="block text-sm font-medium">
-                Attachments
+                Attachments (Optional)
               </label>
               <input
                 id="attachments"
@@ -168,7 +195,10 @@ export default function Dashboard() {
             </div>
 
             <div className="text-right">
-              <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              >
                 Submit
               </button>
             </div>

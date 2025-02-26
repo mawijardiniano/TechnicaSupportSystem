@@ -38,7 +38,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/admin/incoming" className={`${baseClasses} ${pathname === "/admin/incoming" ? activeClasses : ""}`}>
+            <Link href="/users/dashboard/history" className={`${baseClasses} ${pathname === "/admin/incoming" ? activeClasses : ""}`}>
               <FileInput size={20} /> Report History
             </Link>
           </li>

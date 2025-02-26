@@ -26,19 +26,19 @@ export default function Admin() {
       const reports = response.data;
       setReports(reports);
       setPendingReports(
-        reports.filter((report) => report.status === "pending").length
+        reports.filter((report) => report.status === "Pending").length
       );
       setInProgressReports(
-        reports.filter((report) => report.status === "in-progress").length
+        reports.filter((report) => report.status === "In Progress").length
       );
       setOnHoldReports(
-        reports.filter((report) => report.status === "on-hold").length
+        reports.filter((report) => report.status === "On Hold").length
       );
       setClosedReports(
-        reports.filter((report) => report.status === "closed").length
+        reports.filter((report) => report.status === "Closed").length
       );
       setCriticalReports(
-        reports.filter((report) => report.status === "critical").length
+        reports.filter((report) => report.status === "Resolved").length
       );
     } catch (error) {
       console.error("Error fetching reports", error);
