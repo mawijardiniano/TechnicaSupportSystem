@@ -69,9 +69,7 @@ export default function Admin() {
             <Clock />
           </div>
           <p className="text-3xl font-bold">{pendingReports}</p>
-          <p className="text-gray-400 font-medium text-sm">
-            +15.3% from last month
-          </p>
+         
         </div>
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
@@ -79,9 +77,7 @@ export default function Admin() {
             <Loader />
           </div>
           <p className="text-3xl font-bold">{inProgressReports}</p>
-          <p className="text-gray-400 font-medium text-sm">
-            +10.2% from last month
-          </p>
+          
         </div>
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
@@ -89,9 +85,7 @@ export default function Admin() {
             <PauseCircle />
           </div>
           <p className="text-3xl font-bold">{onHoldReports}</p>
-          <p className="text-gray-400 font-medium text-sm">
-            +5.4% from last month
-          </p>
+          
         </div>
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
@@ -99,9 +93,7 @@ export default function Admin() {
             <CheckCircle />
           </div>
           <p className="text-3xl font-bold">{closedReports}</p>
-          <p className="text-gray-400 font-medium text-sm">
-            +8.7% from last month
-          </p>
+         
         </div>
         <div className="w-full h-36 border p-6 rounded-sm flex flex-col justify-between">
           <div className="flex flex-row justify-between">
@@ -109,9 +101,7 @@ export default function Admin() {
             <AlertTriangle />
           </div>
           <p className="text-3xl font-bold">{criticalReports}</p>
-          <p className="text-gray-400 font-medium text-sm">
-            +12.9% from last month
-          </p>
+          
         </div>
       </div>
     </div>
