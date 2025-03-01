@@ -67,7 +67,7 @@ export default function Dashboard() {
       });
 
       setMessage("Your request has been submitted successfully!");
-      setFormData((prev) => ({ ...initialFormData, user: userId })); // Keep user ID
+      setFormData((prev) => ({ ...initialFormData, user: userId }));
     } catch (error) {
       console.error("Error submitting report:", error);
       setMessage(error?.response?.data?.message || "An error occurred. Please try again later.");
@@ -75,7 +75,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="">
       <Card className="w-full max-w-2xl p-6 shadow-lg">
         <CardContent>
           <h2 className="text-2xl font-semibold mb-6 text-center">Submit a Technical Problem</h2>
