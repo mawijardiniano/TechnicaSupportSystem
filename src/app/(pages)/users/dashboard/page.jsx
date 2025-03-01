@@ -13,27 +13,60 @@ import {
 
 export default function Page() {
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState(null);
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const GET_LOGGED = "http://localhost:5001/api/authentication/me";
+  const GET_REPORT = (id) => `http://localhost:5001/api/report/get-report/${id}`;
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserAndReports = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) return;
+        if (!token) {
+          setError("No authentication token found.");
+          setLoading(false);
+          return;
+        }
 
-        const response = await axios.get(GET_LOGGED, {
+        const userResponse = await axios.get(GET_LOGGED, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
-        setUserName(response.data.name || "DOST Staff");
+
+        const user = userResponse.data;
+        console.log("user", user)
+        setUserName(user.name || "DOST Staff");
+        setUserId(user.userId);
+
+        console.log("Fetched user ID:", user._id);
+
+        if (!user.userId) {
+          setError("User ID not found.");
+          setLoading(false);
+          return;
+        }
+
+        const reportResponse = await axios.get(GET_REPORT(user.userId), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setReports(reportResponse.data);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error("Error fetching reports:", error);
+        setError("Failed to load reports.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUser();
+    fetchUserAndReports();
   }, []);
 
   return (
@@ -44,29 +77,40 @@ export default function Page() {
           Submit Report
         </button>
       </div>
+
       <div className="border rounded-md">
         <div className="p-4">
           <h1 className="text-2xl font-bold pb-4">Your Recent Reports</h1>
-          <div>
+          {loading ? (
+            <p>Loading reports...</p>
+          ) : error ? (
+            <p className="text-red-500">{error}</p>
+          ) : reports.length === 0 ? (
+            <p>No reports found.</p>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">Invoice</TableHead>
+                  <TableHead>Report ID</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Method</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead className="text-right">Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                </TableRow>
+                {reports.map((report) => (
+                  <TableRow key={report._id}>
+                    <TableCell className="font-medium">{report._id}</TableCell>
+                    <TableCell>{report.status || "Pending"}</TableCell>
+                    <TableCell>{report.reportDescription || "No Description"}</TableCell>
+                    <TableCell className="text-right">
+                      {new Date(report.createdAt).toLocaleDateString()}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
-          </div>
+          )}
         </div>
       </div>
     </div>
