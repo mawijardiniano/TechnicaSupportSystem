@@ -58,8 +58,8 @@ const Sidebar = () => {
             {isSettingsOpen && (
               <ul className="ml-6 mt-2 space-y-2">
                 <li>
-                  <Link href="/admin/settings/add-agency" className={`${baseClasses} ${pathname === "/admin/settings/add-agency" ? activeClasses : ""}`}>
-                    Add Agency
+                  <Link href="/admin/settings/add-problem" className={`${baseClasses} ${pathname === "/admin/settings/add-agency" ? activeClasses : ""}`}>
+                    Add Problem
                   </Link>
                 </li>
                 <li>
