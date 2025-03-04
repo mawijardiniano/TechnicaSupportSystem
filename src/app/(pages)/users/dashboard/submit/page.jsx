@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [formData, setFormData] = useState(initialFormData);
   const [message, setMessage] = useState("");
   const [userId, setUserId] = useState("");
+  const [problem, setProblem] = useState([]);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -29,6 +30,18 @@ export default function Dashboard() {
   }, []);
 
   const SUBMIT_REPORT = "http://localhost:5001/api/report/send-report";
+  const GET_PROBLEMLIST = "http://localhost:5001/api/problem/get-problem";
+
+  const getProblemList = async() => {
+    try {
+      const res = await axios.get(GET_PROBLEMLIST);
+      setProblem(res.data);
+    } catch (error) {
+    }
+  }
+  useEffect(() => {
+    getProblemList();
+  },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,9 +108,11 @@ export default function Dashboard() {
                 required
               >
                 <option value="">Select a problem</option>
-                <option value="software issue">Software Issue</option>
-                <option value="hardware malfunction">Hardware Malfunction</option>
-                <option value="network connectivity">Network Connectivity</option>
+                {problem.map((problems, index) => (
+                  <option key={index} value={problems.value}>
+                    {problems.problem}
+                  </option>
+                ))}
               </select>
             </div>
 

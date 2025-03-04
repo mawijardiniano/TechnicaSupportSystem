@@ -8,7 +8,6 @@ const ProblemSchema = new mongoose.Schema({
   },
   problem: {
     type: String,
-    enum: ["software issue", "hardware malfunction", "network connectivity"],
     required: true,
   },
   problemDescription: {
