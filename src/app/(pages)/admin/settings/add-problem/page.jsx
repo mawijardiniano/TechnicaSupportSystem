@@ -21,8 +21,10 @@ export default function AddProblem() {
 
   const GET_PROBLEM = "http://localhost:5001/api/problem/get-problem";
   const ADD_PROBLEM = "http://localhost:5001/api/problem/add-problem";
-  const EDIT_PROBLEM = (id) => `http://localhost:5001/api/problem/edit-problem/${id}`;
-  const DELETE_PROBLEM = (id) => `http://localhost:5001/api/problem/delete-problem/${id}`;
+  const EDIT_PROBLEM = (id) =>
+    `http://localhost:5001/api/problem/edit-problem/${id}`;
+  const DELETE_PROBLEM = (id) =>
+    `http://localhost:5001/api/problem/delete-problem/${id}`;
 
   const getProblem = async () => {
     try {
@@ -46,7 +48,9 @@ export default function AddProblem() {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(EDIT_PROBLEM(selectedProblem._id), { problem: newProblem });
+      await axios.put(EDIT_PROBLEM(selectedProblem._id), {
+        problem: newProblem,
+      });
       setEditModal(false);
       getProblem();
     } catch (error) {
@@ -66,7 +70,7 @@ export default function AddProblem() {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(ADD_PROBLEM, { problem: newProblem, });
+      await axios.post(ADD_PROBLEM, { problem: newProblem });
       setAddModal(false);
       getProblem();
     } catch (error) {
