@@ -1,6 +1,6 @@
 const ProblemList = require("../models/problemList");
 
-// Add a problem
+
 const AddProblem = async (req, res) => {
   try {
     const { problem } = req.body;
@@ -19,7 +19,7 @@ const AddProblem = async (req, res) => {
   }
 };
 
-// Get all problems
+
 const getProblems = async (req, res) => {
   try {
     const problems = await ProblemList.find();
@@ -30,7 +30,7 @@ const getProblems = async (req, res) => {
   }
 };
 
-// Edit a problem
+
 const editProblem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,7 +53,6 @@ const editProblem = async (req, res) => {
   }
 };
 
-// Delete a problem
 const deleteProblem = async (req, res) => {
   try {
     const { id } = req.params;
