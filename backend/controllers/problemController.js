@@ -1,5 +1,4 @@
 const Problem = require("../models/problemModel");
-const User = require("../models/authentication");
 
 const reportProblem = async (req, res) => {
   try {
