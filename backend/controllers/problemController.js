@@ -1,4 +1,5 @@
 const Problem = require("../models/problemModel");
+const User = require("../models/authentication")
 
 const reportProblem = async (req, res) => {
   try {
@@ -18,10 +19,14 @@ const reportProblem = async (req, res) => {
       !problemDescription ||
       !severityLevel ||
       !affected ||
-      !location ||
-      !contactInformation
+      !location 
     ) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const userData = await User.findById(user);
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
     }
 
     const problemReport = new Problem({
@@ -31,7 +36,7 @@ const reportProblem = async (req, res) => {
       severityLevel,
       affected,
       location,
-      contactInformation,
+      contactInformation: userData.email,
       attachments,
       status: "Pending",
     });

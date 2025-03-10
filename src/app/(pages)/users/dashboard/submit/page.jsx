@@ -12,7 +12,6 @@ export default function Dashboard() {
     severityLevel: "",
     affected: "",
     location: "",
-    contactInformation: "",
     attachments: "",
   };
 
@@ -174,21 +173,6 @@ export default function Dashboard() {
                 name="location"
                 type="text"
                 value={formData.location}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contactInformation" className="block text-sm font-medium">
-                Contact Information
-              </label>
-              <input
-                id="contactInformation"
-                name="contactInformation"
-                type="text"
-                value={formData.contactInformation}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
