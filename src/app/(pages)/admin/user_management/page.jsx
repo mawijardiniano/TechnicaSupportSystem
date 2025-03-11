@@ -14,6 +14,7 @@ import {
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [selected, setSelected] = useState(null);
 
   const GET_USERS = "http://localhost:5001/api/authentication/get-users";
@@ -68,9 +69,35 @@ export default function Users() {
                   <TableCell className="p-4">{user.email}</TableCell>
                   <TableCell className="p-4">{user.position}</TableCell>
                   <TableCell className="p-4 text-center space-x-2">
-                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
+                    <button  onClick={() => {
+                        setEditModal(true);
+                        setSelected(user._id);
+                      }} className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
                       Edit
                     </button>
+                    {editModal && selected && (
+                      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded shadow-lg">
+                          <p className="text-lg">
+                            Are you sure you want to edit this user?
+                          </p>
+                          <div className="flex justify-end space-x-4 mt-4">
+                            <button
+                              onClick={() => setEditModal(false)}
+                              className="bg-gray-300 px-4 py-2 rounded"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => handleDelete(selected)}
+                              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+                            >
+                              Confirm
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <button
                       onClick={() => {
                         setDeleteModal(true);

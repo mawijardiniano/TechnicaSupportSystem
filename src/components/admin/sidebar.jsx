@@ -39,12 +39,12 @@ const Sidebar = () => {
           </li>
           <li>
             <Link href="/admin/reports" className={`${baseClasses} ${pathname === "/admin/add" ? activeClasses : ""}`}>
-              <FilePlus size={20} /> Reports
+              <FilePlus size={20} /> Active Reports
             </Link>
           </li>
           <li>
-            <Link href="/admin/incoming" className={`${baseClasses} ${pathname === "/admin/incoming" ? activeClasses : ""}`}>
-              <FileInput size={20} /> Report History
+            <Link href="/admin/closed_report" className={`${baseClasses} ${pathname === "/admin/incoming" ? activeClasses : ""}`}>
+              <FileInput size={20} /> Closed Report
             </Link>
           </li>
 
