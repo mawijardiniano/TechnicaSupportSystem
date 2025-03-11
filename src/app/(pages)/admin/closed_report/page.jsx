@@ -72,7 +72,7 @@ export default function Report() {
   }, []);
 
   useEffect(() => {
-  let filtered = report.filter((r) => r.status !== "Closed"); // Exclude Closed reports
+  let filtered = report.filter((r) => r.status == "Closed"); 
 
   if (filters.status) {
     filtered = filtered.filter((r) => r.status === filters.status);
