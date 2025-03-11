@@ -98,7 +98,7 @@ export default function Report() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-bold pb-4">Reports</h1>
+      <h1 className="text-2xl font-bold pb-4">Closed Reports</h1>
       <div className="space-y-4">
         <div className="border rounded-md p-4">
           <h1 className="text-2xl font-bold pb-2">Filter Reports</h1>
@@ -109,18 +109,6 @@ export default function Report() {
               value={filters.search}
               onChange={(e) => handleFilterChange("search", e.target.value)}
             />
-            <select
-              className="border p-2 rounded w-40"
-              onChange={(e) => handleFilterChange("status", e.target.value)}
-              value={filters.status}
-            >
-              <option value="">Status</option>
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Resolved">Resolved</option>
-              <option value="On Hold">On Hold</option>
-              <option value="Closed">Closed</option>
-            </select>
 
             <select
               className="border p-2 rounded w-40"

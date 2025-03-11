@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -17,6 +18,7 @@ export default function Page() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const GET_LOGGED = "http://localhost:5001/api/authentication/me";
   const GET_REPORT = (id) => `http://localhost:5001/api/report/get-report/${id}`;
@@ -39,7 +41,7 @@ export default function Page() {
         });
 
         const user = userResponse.data;
-        console.log("user", user)
+        console.log("user", user);
         setUserName(user.name || "DOST Staff");
         setUserId(user.userId);
 
@@ -69,11 +71,15 @@ export default function Page() {
     fetchUserAndReports();
   }, []);
 
+  const handleNavigate = () => {
+    router.push("/users/dashboard/submit");
+  };
+
   return (
     <div>
       <div className="flex flex-row justify-between pb-6">
         <p className="text-4xl font-bold">Welcome, {userName}</p>
-        <button className="bg-black py-2 px-4 rounded-md text-white">
+        <button onClick={handleNavigate} className="bg-black py-2 px-4 rounded-md text-white">
           Submit Report
         </button>
       </div>
