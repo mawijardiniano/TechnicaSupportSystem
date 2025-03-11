@@ -119,7 +119,6 @@ export default function Report() {
               <option value="In Progress">In Progress</option>
               <option value="Resolved">Resolved</option>
               <option value="On Hold">On Hold</option>
-              <option value="Closed">Closed</option>
             </select>
 
             <select
