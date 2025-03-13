@@ -72,28 +72,43 @@ export default function Report() {
   }, []);
 
   useEffect(() => {
-  let filtered = report.filter((r) => r.status !== "Closed"); 
+    let filtered = report.filter((r) => r.status !== "Closed");
 
-  if (filters.status) {
-    filtered = filtered.filter((r) => r.status === filters.status);
-  }
+    if (filters.status) {
+      filtered = filtered.filter((r) => r.status === filters.status);
+    }
 
-  if (filters.severity) {
-    filtered = filtered.filter((r) => r.severityLevel === filters.severity);
-  }
+    if (filters.severity) {
+      filtered = filtered.filter((r) => r.severityLevel === filters.severity);
+    }
 
-  if (filters.problem) {
-    filtered = filtered.filter((r) => r.problem === filters.problem);
-  }
+    if (filters.problem) {
+      filtered = filtered.filter((r) => r.problem === filters.problem);
+    }
 
-  if (filters.search) {
-    filtered = filtered.filter((r) =>
-      r.problem.toLowerCase().includes(filters.search.toLowerCase())
-    );
-  }
+    if (filters.search) {
+      filtered = filtered.filter((r) =>
+        r.problem.toLowerCase().includes(filters.search.toLowerCase())
+      );
+    }
 
-  setFilteredReports(filtered);
-}, [filters, report]);
+    setFilteredReports(filtered);
+  }, [filters, report]);
+
+const severityColors = {
+  Low: "bg-green-500 px-2 py-1 rounded",
+  Medium: "bg-yellow-500  px-2 py-1 rounded",
+  High: "bg-orange-500 px-2 py-1 rounded",
+  Critical: "bg-red-500  px-2 py-1 rounded",
+};
+
+const statusColors = {
+  Pending: "bg-gray-500 px-2 py-1 rounded",
+  "In Progress": "bg-blue-500 px-2 py-1 rounded",
+  Resolved: "bg-green-500  px-2 py-1 rounded",
+  "On Hold": "bg-yellow-500 px-2 py-1 rounded",
+  Closed: "bg-red-500  px-2 py-1 rounded",
+};
 
 
   return (
@@ -171,129 +186,132 @@ export default function Report() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredReports.map((reports, index) => (
-                  <TableRow key={index} className="border-b">
-                    <TableCell className="p-4 font-medium">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell className="p-4">{reports.user?.name}</TableCell>
-                    <TableCell className="p-4">{reports.problem}</TableCell>
-                    <TableCell className="p-4">
-                      {reports.problemDescription}
-                    </TableCell>
-                    <TableCell className="p-4">
-                      {reports.severityLevel}
-                    </TableCell>
-                    <TableCell className="p-4">{reports.affected}</TableCell>
-                    <TableCell className="w-40">
-                      {editingIndex === index ? (
-                        <select
-                          className="border p-2 rounded"
-                          value={updatedStatuses[index] || reports.status}
-                          onChange={(e) =>
-                            setUpdatedStatuses((prev) => ({
-                              ...prev,
-                              [index]: e.target.value,
-                            }))
-                          }
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Resolved">Resolved</option>
-                          <option value="On Hold">On Hold</option>
-                          <option value="Closed">Closed</option>
-                        </select>
-                      ) : (
-                        reports.status || "Pending"
-                      )}
-                    </TableCell>
-                    <TableCell className="p-4 text-center flex flex-row justify-center gap-2 items-center">
-                      <button
-                        className="bg-white border rounded w-36 py-2"
-                        onClick={() => {
-                          setViewModal(true);
-                          setSelectedReport(reports);
-                        }}
-                      >
-                        View Report
-                      </button>
-                      {editingIndex === index ? (
-                        <button
-                          onClick={() => updateStatus(reports._id, index)}
-                          className="bg-green-500 text-white py-2 px-4 rounded-sm hover:bg-green-700 w-36"
-                        >
-                          Save
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => setEditingIndex(index)}
-                          className="bg-black text-white py-2 px-4 w-36 rounded-sm hover:bg-gray-800"
-                        >
-                          Update Status
-                        </button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {viewModal && selectedReport && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                      <h2 className="text-lg font-bold mb-4">Report Details</h2>
-                      {selectedReport ? (
-                        <>
-                          <p>
-                            <strong>Report ID:</strong>{" "}
-                            {selectedReport?._id || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Name:</strong>{" "}
-                            {selectedReport?.user?.name || "Unknown"}
-                          </p>
-                          <p>
-                            <strong>Problem Type:</strong>{" "}
-                            {selectedReport?.problem || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Description:</strong>{" "}
-                            {selectedReport?.problemDescription || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Severity Level:</strong>{" "}
-                            {selectedReport?.severityLevel || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Affected:</strong>{" "}
-                            {selectedReport?.affected || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Location:</strong>{" "}
-                            {selectedReport?.location || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Contact Information:</strong>{" "}
-                            {selectedReport?.contactInformation || "N/A"}
-                          </p>
-                          <p>
-                            <strong>Attachment:</strong>{" "}
-                            {selectedReport?.attachment || "No attachment"}
-                          </p>
-                          <p>
-                            <strong>Status:</strong>{" "}
-                            {selectedReport?.status || "Pending"}
-                          </p>
-                        </>
-                      ) : (
-                        <p>No Data Available</p>
-                      )}
-                      <button
-                        onClick={() => setViewModal(false)}
-                        className="bg-red-500 text-white px-4 py-2 rounded-sm mt-4 hover:bg-red-700 w-full"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                )}
+              {filteredReports.map((reports, index) => (
+  <TableRow key={index} className="border-b">
+    <TableCell className="p-4 font-medium">{index + 1}</TableCell>
+    <TableCell className="p-4">{reports.user?.name}</TableCell>
+    <TableCell className="p-4">{reports.problem}</TableCell>
+    <TableCell className="p-4">{reports.problemDescription}</TableCell>
+    
+    <TableCell className="p-4">
+      <span className={`px-2 py-1 rounded text-white ${severityColors[reports.severityLevel]}`}>
+        {reports.severityLevel}
+      </span>
+    </TableCell>
+
+    <TableCell className="p-4">{reports.affected}</TableCell>
+
+    <TableCell className="p-4">
+      {editingIndex === index ? (
+        <select
+          className="border p-2 rounded text-black"
+          value={updatedStatuses[index] || reports.status}
+          onChange={(e) =>
+            setUpdatedStatuses((prev) => ({
+              ...prev,
+              [index]: e.target.value,
+            }))
+          }
+        >
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Resolved">Resolved</option>
+          <option value="On Hold">On Hold</option>
+          <option value="Closed">Closed</option>
+        </select>
+      ) : (
+        <span className={`px-2 py-1 rounded text-white ${statusColors[reports.status]}`}>
+          {reports.status || "Pending"}
+        </span>
+      )}
+    </TableCell>
+
+    <TableCell className="p-4 text-center flex flex-row justify-center gap-2 items-center">
+      <button
+        className="bg-white border rounded w-36 py-2"
+        onClick={() => {
+          setViewModal(true);
+          setSelectedReport(reports);
+        }}
+      >
+        View Report
+      </button>
+      {editingIndex === index ? (
+        <button
+          onClick={() => updateStatus(reports._id, index)}
+          className="bg-green-500 text-white py-2 px-4 rounded-sm hover:bg-green-700 w-36"
+        >
+          Save
+        </button>
+      ) : (
+        <button
+          onClick={() => setEditingIndex(index)}
+          className="bg-black text-white py-2 px-4 w-36 rounded-sm hover:bg-gray-800"
+        >
+          Update Status
+        </button>
+      )}
+    </TableCell>
+  </TableRow>
+))}
+
+
+{viewModal && selectedReport && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 className="text-lg font-bold mb-4">Report Details</h2>
+      {selectedReport ? (
+        <div className="space-y-4">
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Report ID:</strong> {selectedReport?._id || "N/A"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Name:</strong> {selectedReport?.user?.name || "Unknown"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Problem Type:</strong> {selectedReport?.problem || "N/A"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Description:</strong> {selectedReport?.problemDescription || "N/A"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Severity Level:</strong> 
+            <span className={`px-2 py-1 rounded text-white ${severityColors[selectedReport?.severityLevel]}`}>
+              {selectedReport?.severityLevel || "N/A"}
+            </span>
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Affected:</strong> {selectedReport?.affected || "N/A"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Location:</strong> {selectedReport?.location || "N/A"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Contact Information:</strong> {selectedReport?.contactInformation || "N/A"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Attachment:</strong> {selectedReport?.attachment || "No attachment"}
+          </p>
+          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+            <strong>Status:</strong> 
+            <span className={`px-2 py-1 rounded text-white ${statusColors[selectedReport?.status]}`}>
+              {selectedReport?.status || "Pending"}
+            </span>
+          </p>
+        </div>
+      ) : (
+        <p>No Data Available</p>
+      )}
+      <button
+        onClick={() => setViewModal(false)}
+        className="bg-black text-white px-4 py-2 rounded-sm mt-4 border w-30"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
               </TableBody>
             </Table>
           </div>
