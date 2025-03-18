@@ -26,7 +26,6 @@ app.use("/api/authentication", authenticationRouter);
 app.use("/api/report", problemRouter);
 app.use("/api/problem", problemList);
 
-
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
