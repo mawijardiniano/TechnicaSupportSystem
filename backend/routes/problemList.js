@@ -6,7 +6,6 @@ const {
     editProblem,
     deleteProblem 
 } = require("../controllers/problemListController");
-
 router.post("/add-problem", AddProblem);
 router.get("/get-problem", getProblems);
 router.put("/edit-problem/:id", editProblem )
