@@ -17,7 +17,6 @@ export default function AddProblem() {
   const [addModal, setAddModal] = useState(false);
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [newProblem, setNewProblem] = useState("");
-  const [problemDescription, setProblemDescription] = useState("");
 
   const GET_PROBLEM = "http://localhost:5001/api/problem/get-problem";
   const ADD_PROBLEM = "http://localhost:5001/api/problem/add-problem";
