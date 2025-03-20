@@ -95,6 +95,20 @@ export default function Report() {
   setFilteredReports(filtered);
 }, [filters, report]);
 
+const severityColors = {
+  Low: "bg-green-500 px-2 py-1 rounded",
+  Medium: "bg-yellow-500  px-2 py-1 rounded",
+  High: "bg-orange-500 px-2 py-1 rounded",
+  Critical: "bg-red-500  px-2 py-1 rounded",
+};
+
+const statusColors = {
+  Pending: "bg-gray-500 px-2 py-1 rounded",
+  "In Progress": "bg-blue-500 px-2 py-1 rounded",
+  Resolved: "bg-green-500  px-2 py-1 rounded",
+  "On Hold": "bg-yellow-500 px-2 py-1 rounded",
+  Closed: "bg-red-500  px-2 py-1 rounded",
+};
 
   return (
     <div className="w-full">
@@ -171,7 +185,13 @@ export default function Report() {
                       {reports.problemDescription}
                     </TableCell>
                     <TableCell className="p-4">
-                      {reports.severityLevel}
+                    <span
+                        className={`px-2 py-1 rounded text-white ${
+                          severityColors[reports.severityLevel]
+                        }`}
+                      >
+                        {reports.severityLevel}
+                      </span>
                     </TableCell>
                     <TableCell className="p-4">{reports.affected}</TableCell>
                     <TableCell className="w-40">
@@ -193,7 +213,13 @@ export default function Report() {
                           <option value="Closed">Closed</option>
                         </select>
                       ) : (
-                        reports.status || "Pending"
+                        <span
+                          className={`px-2 py-1 rounded text-white ${
+                            statusColors[reports.status]
+                          }`}
+                        >
+                          {reports.status || "Pending"}
+                        </span>
                       )}
                     </TableCell>
                     <TableCell className="p-4 text-center flex flex-row justify-center gap-2 items-center">
@@ -248,7 +274,13 @@ export default function Report() {
                           </p>
                           <p>
                             <strong>Severity Level:</strong>{" "}
-                            {selectedReport?.severityLevel || "N/A"}
+                            <span
+                              className={`px-2 py-1 rounded text-white ${
+                                severityColors[selectedReport?.severityLevel]
+                              }`}
+                            >
+                              {selectedReport?.severityLevel || "N/A"}
+                            </span>
                           </p>
                           <p>
                             <strong>Affected:</strong>{" "}
@@ -268,7 +300,13 @@ export default function Report() {
                           </p>
                           <p>
                             <strong>Status:</strong>{" "}
-                            {selectedReport?.status || "Pending"}
+                            <span
+                              className={`px-2 py-1 rounded text-white ${
+                                statusColors[selectedReport?.status]
+                              }`}
+                            >
+                              {selectedReport?.status || "Pending"}
+                            </span>
                           </p>
                         </>
                       ) : (
