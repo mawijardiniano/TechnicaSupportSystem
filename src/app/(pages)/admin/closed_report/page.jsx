@@ -255,25 +255,25 @@ const statusColors = {
                     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                       <h2 className="text-lg font-bold mb-4">Report Details</h2>
                       {selectedReport ? (
-                        <>
-                          <p>
+                        <div className="space-y-4">
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Report ID:</strong>{" "}
                             {selectedReport?._id || "N/A"}
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Name:</strong>{" "}
                             {selectedReport?.user?.name || "Unknown"}
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Problem Type:</strong>{" "}
                             {selectedReport?.problem || "N/A"}
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Description:</strong>{" "}
                             {selectedReport?.problemDescription || "N/A"}
                           </p>
-                          <p>
-                            <strong>Severity Level:</strong>{" "}
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+                            <strong>Severity Level:</strong>
                             <span
                               className={`px-2 py-1 rounded text-white ${
                                 severityColors[selectedReport?.severityLevel]
@@ -282,24 +282,24 @@ const statusColors = {
                               {selectedReport?.severityLevel || "N/A"}
                             </span>
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Affected:</strong>{" "}
                             {selectedReport?.affected || "N/A"}
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Location:</strong>{" "}
                             {selectedReport?.location || "N/A"}
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Contact Information:</strong>{" "}
                             {selectedReport?.contactInformation || "N/A"}
                           </p>
-                          <p>
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
                             <strong>Attachment:</strong>{" "}
                             {selectedReport?.attachment || "No attachment"}
                           </p>
-                          <p>
-                            <strong>Status:</strong>{" "}
+                          <p className="flex flex-row justify-between border-b border-gray-300 pb-2">
+                            <strong>Status:</strong>
                             <span
                               className={`px-2 py-1 rounded text-white ${
                                 statusColors[selectedReport?.status]
@@ -308,13 +308,13 @@ const statusColors = {
                               {selectedReport?.status || "Pending"}
                             </span>
                           </p>
-                        </>
+                        </div>
                       ) : (
                         <p>No Data Available</p>
                       )}
                       <button
                         onClick={() => setViewModal(false)}
-                        className="bg-red-500 text-white px-4 py-2 rounded-sm mt-4 hover:bg-red-700 w-full"
+                        className="bg-black text-white px-4 py-2 rounded-sm mt-4 border w-30"
                       >
                         Close
                       </button>
