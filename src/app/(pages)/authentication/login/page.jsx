@@ -46,8 +46,6 @@ export default function Page() {
     }
   };
   
-  
-
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="border rounded-md shadow-lg p-6 bg-white">
